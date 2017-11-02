@@ -44,7 +44,7 @@ function IsYearFourDigits(year) {
     return /^[0-9]{4}$/.test(year);
 }
 // global validating function
-function isDateEightDigit(date) {
+function IsDateEightDigits(date) {
     // valid date format DDMMYYYY
     return /^((((((0[13578])|(1[02]))[\s\.\-\/\\]?((0[1-9])|([12][0-9])|(3[01])))|(((0[469])|(11))[\s\.\-\/\\]?((0[1-9])|([12][0-9])|(30)))|((02)[\s\.\-\/\\]?((0[1-9])|(1[0-9])|(2[0-8]))))[\s\.\-\/\\]?(((([2468][^048])|([13579][^26]))00)|(\d\d\d[13579])|(\d\d[02468][^048])|(\d\d[13579][^26])))|(((((0[13578])|(1[02]))[\s\.\-\/\\]?((0[1-9])|([12][0-9])|(3[01])))|(((0[469])|(11))[\s\.\-\/\\]?((0[1-9])|([12][0-9])|(30)))|((02)[\s\.\-\/\\]?((0[1-9])|([12][0-9]))))[\s\.\-\/\\]?(((([2468][048])|([13579][26]))00)|(\d\d[2468][048])|(\d\d[13579][26])|(\d\d0[48]))))$/.test(date);
 }
@@ -71,6 +71,23 @@ function validateDateInput(attributeName, test) {
             break;
         case 'dateIsEightDigits':
             console.info('Validating 8 digit date');
+            date = attribute.value;
+            // console.log('year is ', year);
+            var isDateEightDigit = IsDateEightDigits(date);
+            if (isDateEightDigit) {
+                // clear notifications 
+                Xrm.Page.getControl(attributeName).setNotification("");
+                console.info("isDateEightDigit validation passed");
+
+                // format date with slashes/dashes
+                var insertCharacter = '/';
+                attribute.value = attribute.value.substring(0,2) + insertCharacter + 
+                attribute.value.substring(2,4) + insertCharacter + 
+                attribute.value.substring(4);
+
+            } else {
+                Xrm.Page.getControl(attributeName).setNotification("Date should be in format MMDDYYYY");
+            }
             break;
         default:
             break;
@@ -88,8 +105,26 @@ window.onload = function (event) {
     tb_first.onblur = function (event) {
         // debugger;
         console.info('Editing done. Validation starting.');
+        console.log(event.target.value);
+        // fill in missing two-digit sequences - month and day
+        //m/dd/yyyy - 12/1/2017
+        if( event.target.value.match(/^[0-9]{1}[-\/\.].*/g) ){
+            event.target.value = '0' + event.target.value;
+            console.log('added zero for month');
+        }
+        //mm/d/yyyy
+        if( event.target.value.match(/[0-9]{2}[-\/\.][0-9]{1}[-\/\.]/g) ){
+            event.target.value = event.target.value.substring(0,3) + '0'
+                + event.target.value.substring(3);
+            console.log('added zero for day');
+        }
+        // clean - strip non-numeric characters (\D or [^0-9] = not numeric)
+        event.target.value = event.target.value.replace(/[^0-9]/g,'');
+        // add zeros for one digit month and days
+
+
         // validate the field's value
-        validateDateInput(event.target.id, 'yearIsFourDigits');
+        // validateDateInput(event.target.id, 'yearIsFourDigits');
         validateDateInput(event.target.id, 'dateIsEightDigits');
     }
 
