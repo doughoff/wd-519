@@ -28,7 +28,11 @@ Xrm.Page.getControl = function (controlName) {
     // returns value from object above
     var control = crmSchemaAttributes[controlName];
     control.setNotification = function (message) {
-        console.error(message);
+        if (message) {
+            console.error(message);
+        } else {
+            console.info('Cleared notifications.');
+        }
     }
     return control;
 }
@@ -58,6 +62,8 @@ function validateDateInput(attributeName, test) {
             // console.log('year is ', year);
             var isYearFourDigits = IsYearFourDigits(year);
             if (isYearFourDigits) {
+                // clear notifications 
+                Xrm.Page.getControl(attributeName).setNotification("");
                 console.info("yearIsFourDigits validation passed");
             } else {
                 Xrm.Page.getControl(attributeName).setNotification("Year should be in format XXXX");
