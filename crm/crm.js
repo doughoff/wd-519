@@ -38,3 +38,14 @@ function checkfield() {
     }
 }
 
+window.onload  = function(){
+    var tb_first = document.querySelector('#firstTextBoxID');
+    // console.log('first text field', tb_first);
+    tb_first.onfocus = function (event){
+        console.info('Field is being edited.');
+    }
+    tb_first.onblur = function (event){
+        console.info('Editing done. Field should be validated now.');
+        console.log(event);
+    }
+}

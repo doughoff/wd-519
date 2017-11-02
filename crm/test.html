@@ -21,15 +21,4 @@
         <input type="submit" value="Submit">
     </form>
 </body>
-<script>
-    var tb_first = document.querySelector('#firstTextBoxID');
-    // console.log('first text field', tb_first);
-    tb_first.onfocus = function (event){
-        console.info('Field is being edited.');
-    }
-    tb_first.onblur = function (event){
-        console.info('Editing done. Field should be validated now.');
-        console.log(event);
-    }
-</script>
 </html>
