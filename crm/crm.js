@@ -63,7 +63,8 @@ function validateDateInput(attributeName, test) {
                 Xrm.Page.getControl(attributeName).setNotification("Year should be in format XXXX");
             }
             break;
-        case 'yearIsFourDigits':
+        case 'dateIsEightDigits':
+            console.info('Validating 8 digit date');
             break;
         default:
             break;
