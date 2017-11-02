@@ -107,12 +107,12 @@ window.onload = function (event) {
         console.info('Editing done. Validation starting.');
         console.log(event.target.value);
         // fill in missing two-digit sequences - month and day
-        //m/dd/yyyy - 12/1/2017
+        // m/dd/yyyy
         if( event.target.value.match(/^[0-9]{1}[-\/\.].*/g) ){
             event.target.value = '0' + event.target.value;
             console.log('added zero for month');
         }
-        //mm/d/yyyy
+        // mm/d/yyyy
         if( event.target.value.match(/[0-9]{2}[-\/\.][0-9]{1}[-\/\.]/g) ){
             event.target.value = event.target.value.substring(0,3) + '0'
                 + event.target.value.substring(3);
