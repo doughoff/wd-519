@@ -44,7 +44,7 @@ function checkfield(attributeName, test) {
     var attribute = Xrm.Page.getAttribute(attributeName);
     console.log('attribute is ', attribute);
     switch (test) {
-        case 'year':
+        case 'yearIsFourDigits':
             year = attribute.value;
             console.log('year is ', year);
             var check = IsYear(year);
@@ -71,10 +71,12 @@ window.onload = function (event) {
 
     tb_first.onblur = function (event) {
         console.info('Editing done. Field should be validated now.');
+        debugger;
         // check field is correct field
         console.log(event.target.id);
         // validate the field's value
-        checkfield(event.target.id, 'year');
+        checkfield(event.target.id, 'yearIsFourDigits');
+        checkfield(event.target.id, 'dateIsEightDigits');
     }
 
     // tb_first.addEventListener('focus', function (event){
